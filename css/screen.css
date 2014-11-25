@@ -1,0 +1,154 @@
+/*
+ *  This file is part of BaseCalculator.
+ *
+ *  BaseCalculator is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  BaseCalculator is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with BaseCalculator.  If not, see <http://www.gnu.org/licenses/>.
+ * */
+
+html, body {
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    border: 0;
+
+    background-color: #eeeeee;
+}
+
+section {
+    width: 600px;
+    height: 100%;
+    padding: 0 50px;
+    margin: 0 auto;
+    border-left: 2px solid #888888;
+    border-right: 2px solid #888888;
+
+    background-color: white;
+}
+
+h1 {
+    padding: 25px 0;
+    margin: 0;
+
+    text-align: center;
+    font-family: sans;
+    font-size: 200%;
+}
+
+#calculator fieldset {
+    border: 0;
+    padding: 0;
+    margin: 0;
+    margin-bottom: 5px;
+}
+
+#calculator input, #calculator textarea {
+    display: block;
+    float: left;
+    height: 24px;
+    border: 2px solid #888888;
+    border-radius: 4px;
+    outline: none;
+
+    background-color: #eeeeee;
+    font-family: monospace;
+}
+#calculator #equal:focus, #calculator #equal:hover,
+#calculator #term:focus, #calculator #term:hover {
+    border-color: black;
+}
+#calculator input::-moz-focus-inner {
+    border: 0;
+}
+
+#control *, #information * {
+    padding: 10px 5px;
+    margin: 5px 0;
+    resize: none;
+
+    text-align: right;
+    font-size: 20px;
+}
+
+#term::-webkit-input-placeholder {
+    font-family: sans;
+    color: #888888;
+}
+#term::-moz-placeholder {
+    font-family: sans;
+    color: #888888;
+}
+#control #equal {
+    width: 50px;
+    height: 48px;
+    margin-left: 10px;
+
+    text-align: center;
+}
+#control #equal:hover {
+    cursor: pointer;
+}
+#control #equal:active {
+    position: relative;
+    left: 1px;
+    top: 1px;
+
+    background-color: #dddddd;
+}
+#control #solution {
+    padding: 10px 5px;
+}
+#information #exception {
+    height: 40px;
+    width: 600px;
+    margin: 0;
+    border:  0;
+    overflow: hidden;
+    resize: none;
+
+    background-color: transparent;
+    text-align: center;
+    font-family: sans;
+    font-size: 20px;
+}
+
+#option label, #option input {
+    display: block;
+    float: left;
+    width: 50px;
+    height: 22px;
+    padding: 0;
+    margin: 5px 0;
+
+    text-align: right;
+    font-family: sans;
+    font-size: 20px;
+}
+#option label {
+    display: block;
+    position: relative;
+    height: 0px;
+    width: 140px;
+    left: 5px;
+    top: 3px;
+
+    text-align: left;
+}
+#option input[type='number'] {
+    padding: 2px;
+    padding-right: 5px;
+}
+#option input[type='checkbox'] {
+    height: 25px;
+    width: 25px;
+    margin-left: 25px;
+}

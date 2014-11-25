@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<!--
+    This file is part of BaseCalculator.
+
+    BaseCalculator is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    BaseCalculator is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with BaseCalculator.  If not, see <http://www.gnu.org/licenses/>
+-->
+
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+
+        <title>Calculator</title>
+
+        <link rel="icon" type="image/png" href="img/favicon.png" />
+
+        <link rel="stylesheet" type="text/css" href="css/screen.css"
+         media="screen">
+
+        <script src="vendor/jquery/dist/jquery.min.js"></script>
+        <script src="vendor/jsbn/jsbn.js"></script>
+        <script src="vendor/jsbn/jsbn2.js"></script>
+
+        <script src="js/moduleerror.js"></script>
+        <script src="js/fraction.js"></script>
+        <script src="js/basefraction.js"></script>
+        <script src="js/parser.js"></script>
+        <script src="js/calculator.js"></script>
+        <script src="tests/calculatortest.js"></script>
+
+        </head>
+    <body>
+        <section>
+            <h1>Calculator</h1>
+            <form id="calculator">
+                 <fieldset id="option">
+                    <input id="inputbase" tabindex="4" type="number" min="2">
+                    <label for="inputbase">Input Base</label>
+
+                    <input id="outputbase" tabindex="5" type="number" min="2">
+                    <label for="outputbase">Output Base</label>
+
+                    <input id="fraction" tabindex="6"  type="checkbox">
+                    <label for="fraction">Fraction</label>
+                </fieldset>
+
+                <fieldset id="control">
+                    <textarea id="term" tabindex="1" cols="42"
+                     placeholder="Enter calculation" autofocus></textarea>
+
+                    <input id="equal" tabindex="2" type="button" value="=">
+
+                    <textarea id="solution" tabindex="3" cols="47"
+                     readonly></textarea>
+                </fieldset>
+
+                <fieldset id="information">
+                    <textarea id="exception" readonly></textarea>
+                </fieldset>
+            </form>
+        </section>
+    </body>
+</html>

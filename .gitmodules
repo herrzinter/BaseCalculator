@@ -1,3 +1,6 @@
 [submodule "external/jquery"]
 	path = external/jquery
 	url = https://github.com/jquery/jquery
+[submodule "external/jsbn"]
+	path = external/jsbn
+	url = https://github.com/jasondavies/jsbn

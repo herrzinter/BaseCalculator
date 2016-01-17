@@ -14,10 +14,10 @@ After cloning the project, the submodules have to be initialised and updated:
 ```bash
 git submodule init
 git submodule update
+# build jquery
+cd external/jquery
+npm run build
 ```
-
-Additionally the jquery library has to be build. See the jquery README for
-further information.
 
 Licence
 =======

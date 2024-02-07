@@ -56,7 +56,7 @@ BaseFractionFactory = function BaseFractionFactory(DIGITS) {
             for(var i = 0; i < base; i++) {
                 //Check if prime is primefactor of base
                 if(base % primes[i] === 0) {
-                    primefactors.push(new BigInteger(primes[i].toString()));
+                    primefactors.push(BigInt(primes[i].toString()));
                 };
             };
             PRIMEFACTORS.push(primefactors);
@@ -64,17 +64,12 @@ BaseFractionFactory = function BaseFractionFactory(DIGITS) {
         return PRIMEFACTORS;
     })();
 
-    //Create BigInteger constants
-    var ZERO = new BigInteger('0');
-    var ONE = new BigInteger('1');
-    var TEN = new BigInteger('10');
-
     //Constructor
     function BaseFraction() {
-        if(arguments[0] instanceof BigInteger
-           && arguments[1] instanceof BigInteger
-           && arguments[2] instanceof BigInteger) {
-            this.fromBigInteger(arguments[0], arguments[1], arguments[2]);
+        if(arguments[0] instanceof BigInt
+           && arguments[1] instanceof BigInt
+           && arguments[2] instanceof BigInt) {
+            this.fromBigInt(arguments[0], arguments[1], arguments[2]);
         };
         if(typeof arguments[0] === 'string') {
             this.fromStringBase(arguments[0], arguments[1]);
@@ -91,13 +86,13 @@ BaseFractionFactory = function BaseFractionFactory(DIGITS) {
     //Intialization functions
     BaseFraction.prototype.fromBaseFraction
     = function fromBaseFraction(baseFraction) {
-        this.fromBigInteger(baseFraction.numerator, baseFraction.denominator,
+        this.fromBigInt(baseFraction.numerator, baseFraction.denominator,
                             baseFraction.base);
     };
-    BaseFraction.prototype.fromBigInteger
-    = function fromBigInteger(numerator, denominator, base) {
+    BaseFraction.prototype.fromBigInt
+    = function fromBigInt(numerator, denominator, base) {
         //Call initialization method of super class
-        Fraction.prototype.fromBigInteger.apply(this, arguments);
+        Fraction.prototype.fromBigInt.apply(this, arguments);
         this.base = base;
     };
     BaseFraction.prototype.fromStringBase
@@ -109,14 +104,14 @@ BaseFractionFactory = function BaseFractionFactory(DIGITS) {
                 'Base is not between 2 and ' + DIGITS.length
             );
         };
-        var baseBigInteger = new BigInteger(base.toString());
+        var baseBigInt = BigInt(base.toString());
 
         //Create fraction
-        var numerator = ZERO;
+        var numerator = 0n;
         //Identify sign and remove it from the string
-        var sign = new BigInteger('1');
+        var sign = BigInt('1');
         if(string[0] === '-') {
-            sign = new BigInteger('-1');
+            sign = BigInt('-1');
             string = string.slice(1, string.length);
         };
         //Identifiend point and remove it from the string
@@ -127,7 +122,7 @@ BaseFractionFactory = function BaseFractionFactory(DIGITS) {
         string = string.slice(0, point)
                  + string.slice(point + 1, string.length);
         //Calculate resulting shift
-        var shift = new BigInteger((string.length - point).toString());
+        var shift = BigInt((string.length - point).toString());
 
         //
         for(var i = 0; i < string.length; i++) {
@@ -139,18 +134,18 @@ BaseFractionFactory = function BaseFractionFactory(DIGITS) {
                     + ' is not defined for base ' + base
                 );
             };
-            numerator = numerator.add(
-                new BigInteger(value.toString()).multiply(
-                    baseBigInteger.pow(new BigInteger(i.toString()))
+            numerator = numerator + (
+                BigInt(value.toString()) * (
+                    (baseBigInt ** BigInt(i.toString()))
                 )
             );
         };
 
         //Call parent class initialization function
-        this.fromBigInteger(
-            numerator.multiply(sign),
-            baseBigInteger.pow(shift),
-            baseBigInteger
+        this.fromBigInt(
+            numerator * sign,
+            baseBigInt ** shift,
+            baseBigInt
         );
     };
 
@@ -160,7 +155,7 @@ BaseFractionFactory = function BaseFractionFactory(DIGITS) {
         //Calculate the finit or not finit representation of the remaining
         //proper fraction. This is necessary, as we can not use the
         //conversion algorithm for fractions.
-        //The "pseudo floating point" object contains a BigInteger
+        //The "pseudo floating point" object contains a BigInt
         //representation of the finit and infinit part of the number and
         //the factor, which shifted the post radix number to an integer
         function createFloat(numerator, denominator) {
@@ -168,8 +163,8 @@ BaseFractionFactory = function BaseFractionFactory(DIGITS) {
             var string = '';
             var infinit = false;
 
-            numerator = numerator.multiply(TEN);
-            for(var i = 0; !numerator.equals(ZERO); i++) {
+            numerator = numerator * 10n;
+            for(var i = 0; numerator !== 0n; i++) {
                 //Recurrence detection
                 if(valueArray.indexOf(numerator.toString()) > -1) {
                     infinit = valueArray.indexOf(numerator.toString());
@@ -177,20 +172,20 @@ BaseFractionFactory = function BaseFractionFactory(DIGITS) {
                 };
                 valueArray.push(numerator.toString());
 
-                string += numerator.divide(denominator).toString();
-                numerator = numerator.remainder(denominator);
-                numerator = numerator.multiply(TEN);
+                string += (numerator / denominator).toString();
+                numerator = numerator % denominator;
+                numerator = numerator * 10n;
             };
 
             var infinitlength = string.length - infinit;
-            var finit = new BigInteger(string);
+            var finit = BigInt(string);
             if(infinit !== false) {
-                var infinit = new BigInteger(
+                var infinit = BigInt(
                     string.slice(infinit, string.length)
                 );
-                finit = finit.subtract(infinit);
+                finit = finit - infinit;
             };
-            var shift = TEN.pow(new BigInteger((i).toString()));
+            var shift = 10n ** (BigInt((i).toString()));
 
             return {
                 'finit' : finit,
@@ -212,15 +207,15 @@ BaseFractionFactory = function BaseFractionFactory(DIGITS) {
 
             //Add the infinit part to the finit part if existend
             if(value.infinit !== false) {
-                value.finit = value.finit.add(value.infinit);
+                value.finit = value.finit + value.infinit;
             };
             //The length of the infinit part
             //var length = value.infinit.toString().length;
             var length = value.infinitlength;
-            var divisor = TEN.pow(new BigInteger(length.toString()));
+            var divisor = 10n ** BigInt(length.toString());
 
             //
-            for(var j = 0; !value.finit.equals(ZERO); j++) {
+            for(var j = 0; value.finit !== 0n; j++) {
                 //Detect recurrence in the output string
                 if(valueArray.indexOf(value.finit.toString()) > -1) {
                     infinit = valueArray.indexOf(value.finit.toString());
@@ -228,35 +223,31 @@ BaseFractionFactory = function BaseFractionFactory(DIGITS) {
                 };
                 valueArray.push(value.finit.toString());
 
-                value.finit = value.finit.multiply(base);
+                value.finit = value.finit * base;
 
                 if(value.infinit !== false) {
                     //Append carry from infinit part
-                    value.infinit = value.infinit.multiply(base);
-                    var tmp = new BigInteger(value.infinit.toString());
+                    value.infinit = value.infinit * base;
+                    var tmp = BigInt(value.infinit.toString());
                     var tmplength = tmp.toString().length;
                     //
                     for(i = length; i < tmplength; i = i + length) {
-                        value.infinit = value.infinit.add(tmp.divide(
-                            TEN.pow(new BigInteger(i.toString()))
-                        ));
+                        value.infinit = value.infinit + (
+                            tmp / (10n ** BigInt(i.toString()))
+                        );
                     };
-                    var carry = value.infinit.divide(divisor);
-                    value.infinit = value.infinit.subtract(
-                        carry.multiply(divisor)
-                    );
+                    var carry = value.infinit / divisor;
+                    value.infinit = value.infinit - (carry * divisor);
                     //If output string is finit add one
                     if(j === 0 && isFinit) {
-                        carry = carry.add(ONE);
+                        carry += 1n;
                     };
-                    value.finit = value.finit.add(carry);
+                    value.finit += carry;
                 };
 
-                var index = value.finit.divide(value.shift);
+                var index = value.finit / value.shift;
                 string += DIGITS[index];
-                value.finit = value.finit.subtract(
-                    index.multiply(value.shift)
-                );
+                value.finit = value.finit - (index * value.shift);
             };
             //Add brackets to indicate recurrence
             if(infinit !== false) {
@@ -272,11 +263,11 @@ BaseFractionFactory = function BaseFractionFactory(DIGITS) {
 
 
         //Calculate digits before the point
-        var pre = this.copy().abs().toInteger();
+        var pre = this.copy().abs().toBigInt();
         while(pre >= 1) {
-            var remainder = pre.mod(this.base);
+            var remainder = pre % this.base;
             string = DIGITS[Number(remainder.toString())] + string;
-            pre = pre.subtract(remainder).divide(this.base);
+            pre = (pre - remainder) / this.base;
         };
 
         var post = this.copy().abs().remainder();
@@ -298,7 +289,7 @@ BaseFractionFactory = function BaseFractionFactory(DIGITS) {
             string = string.slice(0, string.length - 1);
         };
         //Prepend sign fi number is negativ
-        if(this.toSignum() === -1) {
+        if(this.toIntSign() === -1) {
             string = '-' + string;
         };
 
@@ -311,7 +302,7 @@ BaseFractionFactory = function BaseFractionFactory(DIGITS) {
 
     //Change the base used for representation
     BaseFraction.prototype.convert = function convert(base) {
-        this.base = new BigInteger(base.toString());
+        this.base = BigInt(base.toString());
         return this;
     };
 
@@ -325,12 +316,12 @@ BaseFractionFactory = function BaseFractionFactory(DIGITS) {
         for(var i = 0; i < primefactors.length; i++) {
             //If the prime factor is a proper divisor of the denominator
             //remove the prime factor by division
-            while(denominator.mod(primefactors[i]).equals(ZERO)) {
-                denominator = denominator.divide(primefactors[i]);
+            while((denominator % primefactors[i]) === 0n) {
+                denominator /= primefactors[i];
             };
             //If the denominator is one it has been divided by all prime
             //factors and a finit representation of the fraction exists
-            if(denominator.equals(ONE)) {
+            if(denominator === 1n) {
                 return true;
             };
         };

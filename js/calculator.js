@@ -145,7 +145,7 @@ $(function() {
                 if(fraction) {
                     var result = new Num(number.numerator.toString())
                                      .convert(outputbase).toString();
-                    if(!number.denominator.equals(new BigInteger('1'))) {
+                    if(number.denominator !== BigInt('1')) {
                         result = result +  '/'
                                  + new Num(number.denominator.toString())
                                        .convert(outputbase).toString();
